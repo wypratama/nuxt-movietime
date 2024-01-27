@@ -13,4 +13,10 @@ CSS RESET
 
 */
 @import 'node_modules/modern-normalize/modern-normalize.css';
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  color: #E5E5E5;
+  background-color: #1E232B;
+}
 </style>

@@ -2,6 +2,12 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxtjs/google-fonts', '@nuxt/image'],
+  runtimeConfig: {
+    baseApi: 'https://api.themoviedb.org/3',
+    public: {
+      baseImage: 'https://image.tmdb.org/t/p/',
+    },
+  },
   /**
    * --------------------------------------------------------------------------
    * MODULE CONFIGURATION
@@ -18,12 +24,16 @@ export default defineNuxtConfig({
   },
   image: {
     providers: {
-      myProvider: {
+      local: {
         name: 'local',
-        provider: '~/providers/image.ts',
+        provider: '~/providers/image/local.ts',
         options: {
           // baseURL: "https://site.com"
         },
+      },
+      tmdb: {
+        name: 'tmdb',
+        provider: '~/providers/image/tmdb.ts',
       },
     },
   },
