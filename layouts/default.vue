@@ -2,6 +2,7 @@
   <div class="layout-movie">
     <layout-default-navbar />
     <slot />
+    <layout-default-footer />
   </div>
 </template>
 
