@@ -2,15 +2,20 @@
 const { genre } = defineProps<{
   genre: Entity.Genre
 }>()
+
+const model = defineModel()
 </script>
 
 <template>
   <div class="checkbox">
     <span>{{ genre.name }}</span>
-    <label class="container">
-      <input :checked="false" type="checkbox">
-      <div class="checkmark" />
-    </label>
+
+    <div class="content">
+      <label class="checkBox">
+        <input :id="`checkbox-${genre.id}`" v-model="model" type="checkbox" :value="genre.id">
+        <div class="transition" />
+      </label>
+    </div>
   </div>
 </template>
 
@@ -18,80 +23,52 @@ const { genre } = defineProps<{
 .checkbox {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
 }
-/* Hide the default checkbox */
-.container input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
+
+.clear {
+  clear: both;
 }
 
-.container {
-  display: flex;
-  gap: 10px;
-}
-
-/* Create a custom checkbox */
-.checkmark {
-  position: relative;
-  box-shadow: rgb(255, 84, 0) 0px 0px 0px 2px;
-  background-color: rgba(16, 16, 16, 0.5);
-  height: 20px;
-  width: 20px;
-  margin-right: 10px;
-  flex-shrink: 0;
-  margin-top: -1px;
-  transition: all 0.2s ease 0s;
-  cursor: pointer;
-  transform-origin: 0px 10px;
-  border-radius: 4px;
-  margin: -1px 10px 0px 0px;
-  padding: 0px;
-  box-sizing: border-box;
-}
-
-.container input:checked ~ .checkmark {
-  box-shadow: rgb(255, 84, 0) 0px 0px 0px 2px;
-  background-color: rgba(245, 24, 24, 0.5);
-  height: 20px;
-  width: 20px;
-  margin-right: 10px;
-  flex-shrink: 0;
-  margin-top: -1px;
-  transition: all 0.2s ease 0s;
-  cursor: pointer;
-  transform-origin: 0px 10px;
-  border-radius: 4px;
-  margin: -1px 10px 0px 0px;
-  padding: 0px;
-  box-sizing: border-box;
-}
-
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-}
-
-.container input:checked ~ .checkmark:after {
+.checkBox {
   display: block;
+  cursor: pointer;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0px 0px 0px 2px #fff;
 }
 
-/* Style the checkmark/indicator */
-.container .checkmark:after {
-  left: 0.45em;
-  top: 0.25em;
-  width: 0.25em;
-  height: 0.5em;
-  border: solid white;
-  border-width: 0 0.15em 0.15em 0;
-  transform: rotate(45deg);
-  transition: all 500ms ease-in-out;
+.checkBox div {
+  width: 60px;
+  height: 60px;
+  background-color: #fff;
+  top: -52px;
+  left: -52px;
+  position: absolute;
+  transform: rotateZ(45deg);
+  z-index: 100;
+}
+
+.checkBox input[type=checkbox]:checked + div {
+  left: -10px;
+  top: -10px;
+}
+
+.checkBox input[type=checkbox] {
+  position: absolute;
+  left: 50px;
+  visibility: hidden;
+}
+
+.transition {
+  transition: 300ms ease;
 }
 </style>

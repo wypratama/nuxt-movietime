@@ -1,17 +1,31 @@
 <script setup lang="ts">
-const { data } = useGenre()
+import { useVModels } from '@vueuse/core'
+
+const props = defineProps<{
+  genres: Entity.Genre[]
+}>()
+
+const emit = defineEmits(['update:genres'])
+
+const { data, execute } = useGenre()
+
+const { genres } = useVModels(props, emit)
+
+onMounted(execute)
 </script>
 
 <template>
   <div class="sidebar">
-    Sort Result By
+    <span>Sort Result By</span>
+
+    <span>{{ genres }}</span>
 
     <div class="genre">
       <div class="genre__title">
         <span>Genres</span>
       </div>
       <div class="genre__options">
-        <common-checkbox v-for="genre in data?.genres" :key="genre.id" :genre="genre" />
+        <common-checkbox v-for="genre in data?.genres" :key="genre.id" v-model="genres" :genre="genre" />
       </div>
     </div>
   </div>

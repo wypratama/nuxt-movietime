@@ -1,7 +1,25 @@
 <script setup lang="ts">
 import type { CollectionResponse } from '@/types/common.interface'
 
-const { data } = useLazyFetch<CollectionResponse<Entity.Movie[]>>('/api/tmdb/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc')
+const page = ref(1)
+const genres = ref([])
+
+const genreQuery = computed(() => genres.value.join(','))
+
+const { data } = useLazyFetch<CollectionResponse<Entity.Movie[]>>('/api/tmdb/discover/movie', {
+  query: {
+    include_adult: false,
+    include_video: false,
+    language: 'en-US',
+    page,
+    sort_by: 'popularity.desc',
+    with_genres: genreQuery,
+  },
+})
+
+function onLoadMore() {
+  page.value = 2
+}
 </script>
 
 <template>
@@ -15,15 +33,17 @@ const { data } = useLazyFetch<CollectionResponse<Entity.Movie[]>>('/api/tmdb/dis
           <hr>
           <h1>Discover Movies</h1>
         </div>
+
+        <span>{{ genres }}</span>
       </div>
     </div>
     <div class="page__main content">
-      <movie-sidebar />
+      <movie-sidebar v-model:genres="genres" />
       <div class="content__inner">
         <div v-if="data" class="content__main">
           <movie-card v-for="movie in data.results" :key="movie.id" :movie="movie" />
         </div>
-        <common-button variant="primary">
+        <common-button variant="primary" @click="onLoadMore">
           Load More
         </common-button>
       </div>
@@ -74,8 +94,10 @@ const { data } = useLazyFetch<CollectionResponse<Entity.Movie[]>>('/api/tmdb/dis
 }
 
 .content {
-  display: flex;
-  flex-direction: row;
+  // display: flex;
+  // flex-direction: row;
+  display: grid;
+  grid-template-columns: 240px 1fr;
   gap: 30px;
   margin-top: -120px;
 }

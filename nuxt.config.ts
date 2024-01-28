@@ -13,6 +13,19 @@ export default defineNuxtConfig({
       baseImage: 'https://image.tmdb.org/t/p/',
     },
   },
+  vite: {
+    vue: {
+      script: {
+        defineModel: true,
+        propsDestructure: true,
+      },
+    },
+  },
+  experimental: {
+    typedPages: true,
+    componentIslands: true,
+
+  },
   /**
    * --------------------------------------------------------------------------
    * MODULE CONFIGURATION

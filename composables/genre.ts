@@ -1,5 +1,7 @@
 export function useGenre() {
-  const { data } = useLazyFetch<{ genres: Entity.Genre[] }>('/api/tmdb/genre/movie/list?language=en')
+  const { data, execute, refresh } = useLazyFetch<{ genres: Entity.Genre[] }>('/api/tmdb/genre/movie/list?language=en', {
+    immediate: false,
+  })
 
   const list = computed(() => {
     const map = new Map<number, Entity.Genre>()
@@ -16,5 +18,7 @@ export function useGenre() {
   return {
     data,
     list,
+    execute,
+    refresh,
   }
 }
