@@ -1,3 +1,4 @@
+/* eslint-disable node/prefer-global/process */
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -9,6 +10,9 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     baseApi: 'https://api.themoviedb.org/3',
+    authKey: process.env.TMDB_AUTH_KEY,
+    authType: process.env.TMDB_AUTH_TYPE,
+
     public: {
       baseImage: 'https://image.tmdb.org/t/p/',
     },

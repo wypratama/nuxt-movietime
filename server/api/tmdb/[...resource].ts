@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
     method: event.method,
     headers: {
       accept: 'application/json',
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyZGVjMmI1ZWYzNDk3M2E1OTFjNTk4M2E3NWRiOGQwZiIsInN1YiI6IjU4MDRlMmNiOTI1MTQxNDgyODAwMDAxNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.zVLsZCGQ_5qZg-Dg9QN80lRGB4fCfkndecmpg8b5PkU',
+      Authorization: `${config.authType} ${config.authKey}`,
     },
     query,
   })
