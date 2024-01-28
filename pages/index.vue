@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { CollectionResponse } from '@/types/common.interface'
 
-const { data } = useFetch<CollectionResponse<Entity.Movie[]>>('/api/tmdb/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc')
+const { data } = useLazyFetch<CollectionResponse<Entity.Movie[]>>('/api/tmdb/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc')
 </script>
 
 <template>
   <div class="page">
     <div class="page__hero">
-      hello
+      <movie-slider />
     </div>
     <div class="page__main content">
       <div class="content__sidebar">
@@ -21,6 +21,9 @@ const { data } = useFetch<CollectionResponse<Entity.Movie[]>>('/api/tmdb/discove
 </template>
 
 <style lang="scss" scoped>
+.page {
+  margin-top: 100px;
+}
 .page__main {
   max-width: 1200px;
   margin: 0 auto;

@@ -1,7 +1,7 @@
 <template>
   <div class="navbar">
     <div class="navbar__content content">
-      <nuxt-img src="/img/moovietime-logo@2x.png" provider="local" placeholder height="31" />
+      <nuxt-img src="/img/moovietime-logo@2x.png" provider="local" placeholder height="31" @click="navigateTo('/')" />
       <input type="search" class="content__search" placeholder="Find Movie">
       <div>
         <span>CATEGORIES</span>
@@ -19,6 +19,10 @@
 .navbar {
   background: #FFFFFF0D;
   padding: 15px 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
 }
 
 .navbar__content {

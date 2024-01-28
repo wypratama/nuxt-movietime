@@ -8,11 +8,13 @@ const { movie } = defineProps<{
 const { list: genreCollection } = useGenre()
 const firstGenre = computed(() => genreCollection.value.get(movie.genre_ids[0]))
 
-const release_year = computed(() => movie.release_date.split('-')[0])
-
 const target = ref(null)
 
 const { isOutside } = useMouseInElement(target)
+
+function onClickView() {
+  navigateTo(`/movie/${movie.id}`)
+}
 </script>
 
 <template>
@@ -32,7 +34,7 @@ const { isOutside } = useMouseInElement(target)
         </div>
         <span class="hover-card__genre">{{ firstGenre?.name }}</span>
         <div class="hover-card__action">
-          <movie-button variant="primary">
+          <movie-button variant="primary" @click="onClickView">
             VIEW
           </movie-button>
           <movie-button variant="outlined">
@@ -42,7 +44,7 @@ const { isOutside } = useMouseInElement(target)
       </div>
     </div>
     <span class="card__title">{{ movie.title }}</span>
-    <span class="card__subtitle">{{ release_year }}</span>
+    <span class="card__subtitle">{{ getReleaseYear(movie.release_date) }}</span>
     <span class="card__score">{{ movie.vote_average.toFixed(1) }}</span>
   </div>
 </template>

@@ -2,6 +2,11 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxtjs/google-fonts', '@nuxt/image', '@vueuse/nuxt'],
+  router: {
+    options: {
+      scrollBehaviorType: 'smooth',
+    },
+  },
   runtimeConfig: {
     baseApi: 'https://api.themoviedb.org/3',
     public: {
