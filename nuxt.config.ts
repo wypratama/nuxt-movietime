@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@nuxtjs/google-fonts', '@nuxt/image'],
+  modules: ['@nuxtjs/google-fonts', '@nuxt/image', '@vueuse/nuxt'],
   runtimeConfig: {
     baseApi: 'https://api.themoviedb.org/3',
     public: {

@@ -15,4 +15,9 @@ declare module Entity {
     vote_average: number
     vote_count: number
   }
+
+  export interface Genre {
+    id: number
+    name: string
+  }
 }
