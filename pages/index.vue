@@ -19,8 +19,13 @@ const { data } = useLazyFetch<CollectionResponse<Entity.Movie[]>>('/api/tmdb/dis
     </div>
     <div class="page__main content">
       <movie-sidebar />
-      <div v-if="data" class="content__main">
-        <movie-card v-for="movie in data.results" :key="movie.id" :movie="movie" />
+      <div class="content__inner">
+        <div v-if="data" class="content__main">
+          <movie-card v-for="movie in data.results" :key="movie.id" :movie="movie" />
+        </div>
+        <common-button variant="primary">
+          Load More
+        </common-button>
       </div>
     </div>
   </div>
@@ -29,6 +34,7 @@ const { data } = useLazyFetch<CollectionResponse<Entity.Movie[]>>('/api/tmdb/dis
 <style lang="scss" scoped>
 .page {
   margin-top: 100px;
+  margin-bottom: 80px;
 }
 
 .page__subhero {
@@ -72,6 +78,13 @@ const { data } = useLazyFetch<CollectionResponse<Entity.Movie[]>>('/api/tmdb/dis
   flex-direction: row;
   gap: 30px;
   margin-top: -120px;
+}
+
+.content__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  align-items: center;
 }
 
 .content__main {

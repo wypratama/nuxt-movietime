@@ -34,12 +34,12 @@ function onClickView() {
         </div>
         <span class="hover-card__genre">{{ firstGenre?.name }}</span>
         <div class="hover-card__action">
-          <movie-button variant="primary" @click="onClickView">
+          <common-button variant="primary" @click="onClickView">
             VIEW
-          </movie-button>
-          <movie-button variant="outlined">
+          </common-button>
+          <common-button variant="outlined">
             ADD
-          </movie-button>
+          </common-button>
         </div>
       </div>
     </div>
