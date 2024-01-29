@@ -6,15 +6,10 @@ const route = useRoute()
 
 const { data: movie, pending } = useLazyFetch<Entity.MovieDetail>(`/api/tmdb/movie/${route.params.id}`)
 
-const { data: reviews, execute } = useLazyFetch<ReviewCollectionResponse<Entity.Review[]>>(`/api/tmdb/movie/${movie.value?.id}/reviews?language=en-US&page=1`, {
-  // transform: r => (r as unknown as ReviewCollectionResponse<Entity.Review[]>).results,
-  immediate: false,
-  server: false,
-})
+const url = computed(() => `/api/tmdb/movie/${route.params.id}/reviews?language=en-US&page=1`)
 
-watch(movie, (m) => {
-  if (m)
-    execute()
+const { data: reviews } = useLazyFetch<ReviewCollectionResponse<Entity.Review[]>>(url.value, {
+  // transform: r => (r as unknown as ReviewCollectionResponse<Entity.Review[]>).results,
 })
 
 const movieGenres = computed(() => {
@@ -31,12 +26,36 @@ const movieGenres = computed(() => {
     </div>
     <div v-else class="content">
       <div class="content__backdrop">
-        <nuxt-img :src="movie?.backdrop_path" provider="tmdb" />
+        <nuxt-img :src="movie?.backdrop_path" provider="tmdb" class="content__backdrop-image" />
         <div class="content__movie-detail movie-detail">
           <div class="movie-detail__main">
-            <div>
-              <nuxt-img src="/img/star.svg" provider="local" width="32" height="32" class="hover-card__rating-icon" />
-              <span>{{ movie?.vote_average.toFixed(1) }}</span>
+            <div class="movie-detail__rating-group">
+              <nuxt-img src="/img/star.svg" provider="local" width="32" height="32" />
+              <span class="movie-detail__rating">{{ movie?.vote_average.toFixed(1) }}</span>
+              <div class="movie-detail__info-group">
+                <span class="text-mute">USER SCORE</span>
+                <span class="text-white ">{{ movie?.vote_count }} VOTES</span>
+              </div>
+              <div class="movie-detail__separator" />
+              <div class="movie-detail__info-group">
+                <span class="text-mute">STATUS</span>
+                <span class="text-white ">{{ movie?.status }}</span>
+              </div>
+              <div class="movie-detail__separator" />
+              <div class="movie-detail__info-group">
+                <span class="text-mute">LANGUAGE</span>
+                <span class="text-white ">{{ movie?.spoken_languages[0].name }}</span>
+              </div>
+              <div class="movie-detail__separator" />
+              <div class="movie-detail__info-group">
+                <span class="text-mute">BUDGET</span>
+                <span class="text-white ">{{ movie?.budget }}</span>
+              </div>
+              <div class="movie-detail__separator" />
+              <div class="movie-detail__info-group">
+                <span class="text-mute">PRODUCTION</span>
+                <span class="text-white ">{{ movie?.production_companies[0].name }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -55,17 +74,21 @@ const movieGenres = computed(() => {
       <div class="content__review">
         <div class="review">
           <div class="review__overview">
-            <h3>OVERVIEW {{ route.params.id }}</h3>
-            <p>{{ movie?.tagline }}</p>
+            <h3 class="text-title ">
+              OVERVIEW
+            </h3>
+            <p>{{ movie?.overview }}</p>
           </div>
-          <h3 class="review__title">
+          <h3 class="review__title text-title ">
             REVIEWS
           </h3>
           <div class="review__list">
-            <movie-review-card v-for="review in reviews?.results" :key="review.id" :review="review" />
+            <movie-review-card v-for="review in reviews?.results.slice(0, 2)" :key="review.id" :review="review" />
           </div>
         </div>
       </div>
+
+      <movie-recommendation />
     </div>
   </div>
 </template>
@@ -76,6 +99,10 @@ const movieGenres = computed(() => {
   height: 488px;
   overflow: hidden;
   position: relative;
+}
+
+.content__backdrop-image {
+  width: 100%;
 }
 
 .content__movie-detail {
@@ -103,6 +130,33 @@ const movieGenres = computed(() => {
   padding: 23px 0 25px 280px;
 }
 
+.movie-detail__rating-group {
+  display: flex;
+  flex-direction: row;
+  gap: 17px;
+  align-items: center;
+}
+
+.movie-detail__rating {
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.movie-detail__info-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.movie-detail__separator {
+  border-left: 1px solid rgba(255, 255, 255, 0.20);;
+  height: 41px;
+  margin-left: 33px;
+  margin-right: 33px;
+}
+
 .title-group {
   color: white;
   padding: 17px 0;
@@ -112,6 +166,14 @@ const movieGenres = computed(() => {
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
+  line-height: normal;
+}
+
+.text-title {
+  color: #F00;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
   line-height: normal;
 }
 
@@ -141,12 +203,30 @@ const movieGenres = computed(() => {
 }
 
 .review__title {
-  margin-top: 52px;
+  margin-top: 100px;
 }
 
 .review__list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 34px;
+}
+
+.text-mute {
+  color: rgba(255, 255, 255, 0.50);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-transform: uppercase;
+}
+
+.text-white {
+  color: #FFF;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-transform: uppercase;
 }
 </style>
