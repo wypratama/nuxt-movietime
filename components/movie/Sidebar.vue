@@ -1,28 +1,34 @@
 <script setup lang="ts">
 import { useVModels } from '@vueuse/core'
+import type { SortPreference } from '~/types/common.interface'
 
 const props = defineProps<{
   genres: Entity.Genre[]
+  sort: SortPreference
 }>()
 
-const emit = defineEmits(['update:genres'])
+const emit = defineEmits(['update:genres', 'update:sort'])
 
 const { data, execute } = useGenre()
 
-const { genres } = useVModels(props, emit)
+const { genres, sort } = useVModels(props, emit)
 
 onMounted(execute)
 </script>
 
 <template>
   <div class="sidebar">
-    <span>Sort Result By</span>
+    <div class="sort__title">
+      <span class="text-title">Sort Result By</span>
+    </div>
 
-    <span>{{ genres }}</span>
+    <div class="sort__select">
+      <common-select v-model="sort" />
+    </div>
 
     <div class="genre">
       <div class="genre__title">
-        <span>Genres</span>
+        <span class="text-title">Genres</span>
       </div>
       <div class="genre__options">
         <common-checkbox v-for="genre in data?.genres" :key="genre.id" v-model="genres" :genre="genre" />
@@ -36,25 +42,36 @@ onMounted(execute)
   width: 240px;
   border-radius: 8px;
   background: linear-gradient(180deg, #0E1723 0%, rgba(30, 35, 42, 0.00) 100%);
-  padding: 20px 18px;
+  padding: 20px 0;
   align-self: start;
 }
 
-.genre__title {
-  padding: 11px 0;
-  border-bottom: 1px solid hsla(0,0%,100%,.07);
-  border-top: 1px solid hsla(0,0%,100%,.07);
-  margin: 16px 0;
-
+.text-title {
   font-size: 16px;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
 }
 
+.sort__title {
+  padding: 11px 18px;
+  border-bottom: 1px solid hsla(0,0%,100%,.07);
+}
+
+.sort__select {
+  padding: 11px 18px;
+}
+.genre__title {
+  padding: 11px 18px;
+  border-bottom: 1px solid hsla(0,0%,100%,.07);
+  border-top: 1px solid hsla(0,0%,100%,.07);
+  margin: 16px 0;
+}
+
 .genre__options {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  padding: 0 18px;
 }
 </style>

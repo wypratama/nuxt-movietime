@@ -1,7 +1,19 @@
+<script setup lang="ts">
+import { useWindowScroll } from '@vueuse/core'
+
+const { y } = useWindowScroll()
+const opacity = computed(() => {
+  const maxScroll = 60
+  return Math.min(1, y.value / maxScroll)
+})
+
+const background = computed(() => `rgba(30, 35, 43, ${opacity.value})`)
+</script>
+
 <template>
-  <div class="navbar">
+  <div class="navbar" :style="{ background }">
     <div class="navbar__content content">
-      <nuxt-img src="/img/moovietime-logo@2x.png" provider="local" placeholder height="31" @click="navigateTo('/')" />
+      <nuxt-img src="/img/moovietime-logo@2x.png" provider="local" placeholder height="31" class="content__logo" @click="navigateTo('/')" />
       <input type="search" class="content__search" placeholder="Find Movie">
       <div class="content__categories">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -24,7 +36,7 @@
 
 <style lang="scss" scoped>
 .navbar {
-  background: #FFFFFF0D;
+  // background: #FFFFFF0D;
   padding: 15px 0;
   position: fixed;
   top: 0;
@@ -45,6 +57,10 @@
   gap: 48px;
 }
 
+.content__logo {
+  cursor: pointer;
+}
+
 .content__search {
   width: 100%;
   background: rgba(0, 0, 0, 0.13);
@@ -61,6 +77,10 @@
 
   &:focus {
     box-shadow: 0 0 0 .15vw #E74C3C;
+  }
+
+  &::before {
+    content: url('data:image/svg+xml,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(%23clip0_21_3)"><path d="M18 4L20 8H17L15 4H13L15 8H12L10 4H8L10 8H7L5 4H4C2.895 4 2.01 4.895 2.01 6L2 18C2 19.105 2.895 20 4 20H20C21.105 20 22 19.105 22 18V4H18Z" fill="white" fill-opacity="0.17"/></g><defs><clipPath id="clip0_21_3"><rect width="24" height="24" fill="white"/></clipPath></defs></svg>');
   }
 }
 

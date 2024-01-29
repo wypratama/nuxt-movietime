@@ -23,11 +23,13 @@ const options = {
 
 <template>
   <div class="home-slider">
-    <Splide v-if="trendings" :trendings="trendings" :options="options">
-      <SplideSlide v-for="movie in trendings" :key="movie.id">
-        <MovieSliderCard :movie="movie" />
-      </SplideSlide>
-    </Splide>
+    <ClientOnly>
+      <Splide v-if="trendings" :trendings="trendings" :options="options">
+        <SplideSlide v-for="movie in trendings" :key="movie.id">
+          <MovieSliderCard :movie="movie" />
+        </SplideSlide>
+      </Splide>
+    </ClientOnly>
   </div>
 </template>
 

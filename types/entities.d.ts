@@ -32,7 +32,7 @@ declare module Entity {
     poster_path: string
     production_companies: ProductionCompany[]
     production_countries: ProductionCountry[]
-    release_date: Date
+    release_date: string
     revenue: number
     runtime: number
     spoken_languages: SpokenLanguage[]
@@ -65,6 +65,23 @@ declare module Entity {
     english_name: string
     iso_639_1: string
     name: string
+  }
+
+  export interface Review {
+    author: string
+    author_details: AuthorDetails
+    content: string
+    created_at: Date
+    id: string
+    updated_at: Date
+    url: string
+  }
+
+  export interface AuthorDetails {
+    name: string
+    username: string
+    avatar_path: null | string
+    rating: number
   }
 
 }

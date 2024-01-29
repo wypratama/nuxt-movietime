@@ -1,7 +1,21 @@
 <script setup lang="ts">
+import { watchOnce } from '@vueuse/core'
+import type { ReviewCollectionResponse } from '~/types/common.interface'
+
 const route = useRoute()
 
 const { data: movie, pending } = useLazyFetch<Entity.MovieDetail>(`/api/tmdb/movie/${route.params.id}`)
+
+const { data: reviews, execute } = useLazyFetch<ReviewCollectionResponse<Entity.Review[]>>(`/api/tmdb/movie/${movie.value?.id}/reviews?language=en-US&page=1`, {
+  // transform: r => (r as unknown as ReviewCollectionResponse<Entity.Review[]>).results,
+  immediate: false,
+  server: false,
+})
+
+watch(movie, (m) => {
+  if (m)
+    execute()
+})
 
 const movieGenres = computed(() => {
   if (!movie.value)
@@ -31,15 +45,25 @@ const movieGenres = computed(() => {
       <div class="content__info">
         <nuxt-img :src="movie?.poster_path" provider="tmdb" quality="500" />
         <div class="title-group">
-          <span class="title-group__year">{{ getReleaseYear(movie?.release_date) }}</span>
+          <span class="title-group__year">{{ getReleaseYear(movie?.release_date || '') }}</span>
           <h1 class="title-group__title">
             {{ movie?.title }}
           </h1>
           <span>{{ movieGenres }}</span>
         </div>
-
-        <div class="content__review">
-          content review
+      </div>
+      <div class="content__review">
+        <div class="review">
+          <div class="review__overview">
+            <h3>OVERVIEW {{ route.params.id }}</h3>
+            <p>{{ movie?.tagline }}</p>
+          </div>
+          <h3 class="review__title">
+            REVIEWS
+          </h3>
+          <div class="review__list">
+            <movie-review-card v-for="review in reviews?.results" :key="review.id" :review="review" />
+          </div>
         </div>
       </div>
     </div>
@@ -51,7 +75,7 @@ const movieGenres = computed(() => {
   width: 100%;
   height: 488px;
   overflow: hidden;
-  // position: relative;
+  position: relative;
 }
 
 .content__movie-detail {
@@ -65,6 +89,8 @@ const movieGenres = computed(() => {
   max-width: 1200px;
   margin: 0 auto;
   margin-top: -220px;
+  z-index: 600;
+  position: relative;
 
   display: flex;
   flex-direction: row;
@@ -99,6 +125,28 @@ const movieGenres = computed(() => {
 }
 
 .content__review {
-  // position: relative;
+  background-color: white;
+  margin-top: -160px;
+}
+
+.review {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 0;
+  color: black;
+}
+
+.review__overview {
+  padding-left: 280px;
+}
+
+.review__title {
+  margin-top: 52px;
+}
+
+.review__list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 34px;
 }
 </style>

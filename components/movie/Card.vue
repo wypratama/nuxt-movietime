@@ -20,13 +20,19 @@ function onClickView() {
 <template>
   <div ref="target" class="card">
     <div class="card__image">
-      <!-- placeholder="https://placehold.co/220x300?text=Moovie+Time" -->
       <nuxt-img
+        v-if="movie.poster_path"
+        placeholder="/img/poster-holder.svg"
         :src="movie.poster_path"
         provider="tmdb"
         quality="500"
         class="card__image-poster"
       />
+      <img
+        v-else
+        src="/img/poster-holder.svg"
+        class="card__image-poster"
+      >
       <div v-if="!isOutside" class="card__image-hover hover-card">
         <div class="hover-card__rating">
           <nuxt-img src="/img/star.svg" provider="local" width="32" height="32" class="hover-card__rating-icon" />
@@ -65,6 +71,8 @@ function onClickView() {
 
 .card__image-poster {
   width: 100%;
+  object-fit: cover;
+  height: 100%;
 }
 
 .card__image-hover {

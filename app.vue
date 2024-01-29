@@ -19,4 +19,14 @@ body {
   color: #E5E5E5;
   background-color: #1E232B;
 }
+
+.movie-list-enter-from,
+.movie-list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.movie-list-leave-active {
+  position: fixed;
+}
 </style>

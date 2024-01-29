@@ -1,10 +1,15 @@
 <script setup lang="ts">
-import type { CollectionResponse } from '@/types/common.interface'
+import type { CollectionResponse, SortPreference } from '@/types/common.interface'
 
 const page = ref(1)
 const genres = ref([])
+const sortPref = ref<SortPreference>('popularity.desc')
 
-const genreQuery = computed(() => genres.value.join(','))
+const genreQuery = computed(() => {
+  if (!genres.value.length)
+    return null
+  return genres.value.join(',')
+})
 
 const { data } = useLazyFetch<CollectionResponse<Entity.Movie[]>>('/api/tmdb/discover/movie', {
   query: {
@@ -12,7 +17,7 @@ const { data } = useLazyFetch<CollectionResponse<Entity.Movie[]>>('/api/tmdb/dis
     include_video: false,
     language: 'en-US',
     page,
-    sort_by: 'popularity.desc',
+    sort_by: sortPref,
     with_genres: genreQuery,
   },
 })
@@ -38,7 +43,7 @@ function onLoadMore() {
       </div>
     </div>
     <div class="page__main content">
-      <movie-sidebar v-model:genres="genres" />
+      <movie-sidebar v-model:genres="genres" v-model:sort="sortPref" />
       <div class="content__inner">
         <div v-if="data" class="content__main">
           <movie-card v-for="movie in data.results" :key="movie.id" :movie="movie" />
