@@ -78,8 +78,11 @@ const movieGenres = computed(() => {
           <h3 class="review__title text-title ">
             REVIEWS
           </h3>
-          <div class="review__list">
+          <div v-if="reviews?.results.length" class="review__list">
             <movie-review-card v-for="review in reviews?.results.slice(0, 2)" :key="review.id" :review="review" />
+          </div>
+          <div v-else style="padding: 100px 0; text-align: center;">
+            NO REVIEW FOR THIS MOVIE YET
           </div>
         </div>
       </div>
