@@ -6,11 +6,7 @@ const route = useRoute()
 
 const { data: movie, pending } = useLazyFetch<Entity.MovieDetail>(`/api/tmdb/movie/${route.params.id}`)
 
-const url = computed(() => `/api/tmdb/movie/${route.params.id}/reviews?language=en-US&page=1`)
-
-const { data: reviews } = useLazyFetch<ReviewCollectionResponse<Entity.Review[]>>(url.value, {
-  // transform: r => (r as unknown as ReviewCollectionResponse<Entity.Review[]>).results,
-})
+const { data: reviews } = useLazyFetch<ReviewCollectionResponse<Entity.Review[]>>(`/api/tmdb/movie/${route.params.id}/reviews?language=en-US&page=1`)
 
 const movieGenres = computed(() => {
   if (!movie.value)
@@ -62,7 +58,7 @@ const movieGenres = computed(() => {
       </div>
 
       <div class="content__info">
-        <nuxt-img :src="movie?.poster_path" provider="tmdb" quality="500" />
+        <nuxt-img :src="movie?.poster_path" provider="tmdb" quality="500" class="content__movie-poster" />
         <div class="title-group">
           <span class="title-group__year">{{ getReleaseYear(movie?.release_date || '') }}</span>
           <h1 class="title-group__title">
@@ -103,6 +99,11 @@ const movieGenres = computed(() => {
 
 .content__backdrop-image {
   width: 100%;
+}
+
+.content__movie-poster {
+  width: 250px;
+  height: 375px;
 }
 
 .content__movie-detail {

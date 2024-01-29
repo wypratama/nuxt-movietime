@@ -13,14 +13,14 @@ const { review } = defineProps<{
             v-if="review.author_details.avatar_path"
             :src="review.author_details.avatar_path"
             provider="tmdb"
-            width="32"
-            height="32"
+            width="48"
+            height="48"
             class="review-card__avatar"
           />
         </div>
         <div class="review-card__author-details">
           <span class="review-card__username">{{ review.author_details.username }}</span>
-          <span class="review-card__created-at">{{ review.created_at }}</span>
+          <span class="review-card__created-at">{{ new Date(review.created_at).toLocaleDateString('id-ID', { month: 'long', day: '2-digit', year: 'numeric' }) }}</span>
         </div>
       </div>
 
@@ -59,6 +59,38 @@ const { review } = defineProps<{
 .review-card__author {
   display: flex;
   flex-direction: row;
+  gap: 16px;
+  align-items: center;
+}
+
+.review-card__profile {
+  background-color: rgba(30, 35, 43, 0.21);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.review-card__author-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.review-card__username {
+  color: #1E232A;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.review-card__created-at {
+  color: #666;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 .review-card__rating {
@@ -82,6 +114,7 @@ const { review } = defineProps<{
 }
 
 .review-card__content {
+  margin-top: 25px;
   display: -webkit-box;
   -webkit-line-clamp: 12;
   -webkit-box-orient: vertical;

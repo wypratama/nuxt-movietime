@@ -40,7 +40,7 @@ export default defineNuxtConfig({
    */
   googleFonts: {
     families: {
-      Montserrat: true,
+      Montserrat: '200..700',
     },
   },
   image: {
