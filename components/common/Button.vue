@@ -49,4 +49,10 @@ const classProperty = computed(() => {
   background-color: transparent;
   border: 1px solid #FFF;
 }
+
+.movie-button--secondary {
+  border: 1px solid #FFF;
+  background: #A9FFC6;
+  color: #155129;
+}
 </style>

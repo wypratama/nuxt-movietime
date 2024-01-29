@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useMouseInElement } from '@vueuse/core'
 
-const { movie } = defineProps<{
+const { movie, favorites } = defineProps<{
   movie: Entity.Movie
+  favorites: any
 }>()
 
 const { list: genreCollection } = useGenre()
@@ -15,6 +16,16 @@ const { isOutside } = useMouseInElement(target)
 function onClickView() {
   navigateTo(`/movie/${movie.id}`)
 }
+
+function onClickFavorite() {
+  favorites.set(movie.id, movie)
+}
+
+function onClickRemoveFavorite() {
+  favorites.delete(movie.id)
+}
+
+const isFavorited = computed(() => favorites.has(movie.id))
 </script>
 
 <template>
@@ -43,8 +54,11 @@ function onClickView() {
           <common-button variant="primary" @click="onClickView">
             VIEW
           </common-button>
-          <common-button variant="outlined">
+          <common-button v-if="isFavorited" variant="outlined" @click="onClickFavorite">
             ADD
+          </common-button>
+          <common-button v-else variant="secondary" @click="onClickRemoveFavorite">
+            ADDED
           </common-button>
         </div>
       </div>

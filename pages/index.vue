@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useStorage } from '@vueuse/core'
 import type { CollectionResponse, SortPreference } from '@/types/common.interface'
 
 const page = ref(1)
@@ -25,6 +26,8 @@ const { data } = useLazyFetch<CollectionResponse<Entity.Movie[]>>('/api/tmdb/dis
 function onLoadMore() {
   page.value = 2
 }
+
+const favorites = useStorage('favorites', new Map())
 </script>
 
 <template>
@@ -41,7 +44,7 @@ function onLoadMore() {
 
         <div>
           <span>My Movies</span>
-          <span class="user-movie">0 movies</span>
+          <span class="user-movie">{{ favorites.size }} movies</span>
         </div>
       </div>
     </div>
@@ -49,7 +52,7 @@ function onLoadMore() {
       <movie-sidebar v-model:genres="genres" v-model:sort="sortPref" />
       <div class="content__inner">
         <div v-if="data" class="content__main">
-          <movie-card v-for="movie in data.results" :key="movie.id" :movie="movie" />
+          <movie-card v-for="movie in data.results" :key="movie.id" :movie="movie" :favorites="favorites" />
         </div>
         <common-button variant="primary" @click="onLoadMore">
           Load More
