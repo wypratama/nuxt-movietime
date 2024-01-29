@@ -32,7 +32,8 @@ const { review } = defineProps<{
           height="17"
           class="review-card__rating-icon"
         />
-        <span class="review-card__rating-value">{{ review.author_details.rating.toFixed(1) }}</span>
+        <span v-if="review.author_details.rating" class="review-card__rating-value">{{ review.author_details.rating.toFixed(1) }}</span>
+        <span v-else class="review-card__rating-value">0.0</span>
       </div>
     </div>
 

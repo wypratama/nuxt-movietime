@@ -39,7 +39,10 @@ function onLoadMore() {
           <h1>Discover Movies</h1>
         </div>
 
-        <span>{{ genres }}</span>
+        <div>
+          <span>My Movies</span>
+          <span class="user-movie">0 movies</span>
+        </div>
       </div>
     </div>
     <div class="page__main content">
@@ -96,11 +99,30 @@ function onLoadMore() {
     margin-block-start: 0;
     margin-block-end: 0;
   }
+
+  span {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  >div:last-child {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    align-self: flex-end;
+  }
+
+  .user-movie {
+    border-radius: 32px;
+    background: rgba(0, 0, 0, 0.20);
+    padding: 6px 18px;
+  }
 }
 
 .content {
-  // display: flex;
-  // flex-direction: row;
   display: grid;
   grid-template-columns: 240px 1fr;
   gap: 30px;
