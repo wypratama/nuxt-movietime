@@ -54,7 +54,7 @@ const isFavorited = computed(() => favorites.has(movie.id))
           <common-button variant="primary" @click="onClickView">
             VIEW
           </common-button>
-          <common-button v-if="isFavorited" variant="outlined" @click="onClickFavorite">
+          <common-button v-if="!isFavorited" variant="outlined" @click="onClickFavorite">
             ADD
           </common-button>
           <common-button v-else variant="secondary" @click="onClickRemoveFavorite">
