@@ -2,6 +2,14 @@
 import { useStorage } from '@vueuse/core'
 import type { CollectionResponse, SortPreference } from '@/types/common.interface'
 
+definePageMeta({
+  scrollToTop: true,
+})
+
+useHead({
+  title: 'Moovie Time | Nuxt 3 TMDB Client',
+})
+
 const page = ref(1)
 const genres = ref([])
 const sortPref = ref<SortPreference>('popularity.desc')

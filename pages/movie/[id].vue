@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { watchOnce } from '@vueuse/core'
 import type { ReviewCollectionResponse } from '~/types/common.interface'
+
+definePageMeta({
+  scrollToTop: true,
+})
 
 const route = useRoute()
 
@@ -12,6 +15,12 @@ const movieGenres = computed(() => {
   if (!movie.value)
     return ''
   return movie.value.genres.map(v => v.name).join(', ')
+})
+
+useHead({
+  title() {
+    return movie.value?.title || 'Moovie Time | Nuxt 3 TMDB Client'
+  },
 })
 </script>
 
